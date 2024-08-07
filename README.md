@@ -26,7 +26,7 @@ This task synchronize updates to a Bit lane with its respective Git Branch. As t
 
 ## Example usage
 
-**Note:** Use `actions/checkout@v3` and `bit-task/init@v1` as prior steps in your pipeline before running `bit-tasks/lane-branch@v1`.
+**Note:** Use `actions/checkout@v3` and `bit-task/init@v1` as prior steps in your pipeline before running `bit-tasks/lane-branch@v1`. The branch you specify as the `ref` parameter in the  `actions/checkout@v3` will be used as the destination for the sync operation. You can also receive the `lane-name` as an input parameter as shown below.
 
 ```yaml
 name: Test Bit Lane Branch
