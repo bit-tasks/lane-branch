@@ -1,9 +1,10 @@
-# Create Bit Lane for each Git Branch for CI/CD Pipelines
-For each new Branch in Git, a Bit lane is created in **bit.cloud**.
+
+# Sync Bit lane with Git branch
+When a lane is created or modified in **bit.cloud** sync the changes with the respective Git branch.
 
 # GitHub Actions
 
-This task creates a Bit lane for each Git Branch. As the next step in your pipeline, use the `bit-tasks/commit-bitmap@v1` to update the `.Bitmap` file.
+This task synchronize updates to a Bit lane with its respective Git Branch. As the next step in your pipeline.
 
 ## Inputs
 
