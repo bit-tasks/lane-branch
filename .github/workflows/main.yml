@@ -33,7 +33,7 @@ jobs:
       - name: Add remote scope
         run: cd test-data && bit remote add http://localhost:4000
       - name: Snap and export
-        run: cd test-data && bit snap -m "Snapping the changes" && bit export -m "Exporting the changes"
+        run: cd test-data && bit snap -m "Snapping the changes" && bit export
       - name: Bit Lane Branch
         uses: bit-tasks/lane-branch@main
         with:
