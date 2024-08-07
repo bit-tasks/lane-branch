@@ -6,6 +6,7 @@ try {
   const laneName: string = core.getInput("lane-name") || "main";
   const skipPush: boolean =
     core.getInput("skip-push") === "true" ? true : false;
+  const skipCI: boolean = core.getInput("skip-ci") === "false" ? false : true;
 
   if (!laneName) {
     throw new Error("Lane name is not found");
@@ -21,7 +22,7 @@ try {
     throw new Error("Git user email token not found");
   }
 
-  run(skipPush, laneName, gitUserName, gitUserEmail, wsDir);
+  run(skipPush, skipCI, laneName, gitUserName, gitUserEmail, wsDir);
 } catch (error) {
   core.setFailed((error as Error).message);
 }

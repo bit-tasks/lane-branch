@@ -3970,8 +3970,9 @@ const core = __importStar(__nccwpck_require__(186));
 const lane_branch_1 = __importDefault(__nccwpck_require__(616));
 try {
     const wsDir = core.getInput("ws-dir") || process.env.WSDIR || "./";
-    const laneName = core.getInput("lane") || "main";
+    const laneName = core.getInput("lane-name") || "main";
     const skipPush = core.getInput("skip-push") === "true" ? true : false;
+    const skipCI = core.getInput("skip-ci") === "false" ? false : true;
     if (!laneName) {
         throw new Error("Lane name is not found");
     }
@@ -3983,7 +3984,7 @@ try {
     if (!gitUserEmail) {
         throw new Error("Git user email token not found");
     }
-    (0, lane_branch_1.default)(skipPush, laneName, gitUserName, gitUserEmail, wsDir);
+    (0, lane_branch_1.default)(skipPush, skipCI, laneName, gitUserName, gitUserEmail, wsDir);
 }
 catch (error) {
     core.setFailed(error.message);
@@ -4008,7 +4009,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const exec_1 = __nccwpck_require__(514);
-const run = (skipPush, laneName, gitUserName, gitUserEmail, wsdir) => __awaiter(void 0, void 0, void 0, function* () {
+const run = (skipPush, skipCI, laneName, gitUserName, gitUserEmail, wsdir) => __awaiter(void 0, void 0, void 0, function* () {
     const org = process.env.ORG;
     const scope = process.env.SCOPE;
     yield (0, exec_1.exec)("bit status --strict", [], { cwd: wsdir });
@@ -4024,7 +4025,7 @@ const run = (skipPush, laneName, gitUserName, gitUserEmail, wsdir) => __awaiter(
     });
     yield (0, exec_1.exec)("git add .", [], { cwd: wsdir });
     try {
-        yield (0, exec_1.exec)(`git commit -m "Commiting the latest updates from lane:" ${laneName} to the Git branch`, [], { cwd: wsdir });
+        yield (0, exec_1.exec)(`git commit -m "Commiting the latest updates from lane:" ${laneName} to the Git branch (automated)${skipCI ? ` [skip-ci]` : ''}"`, [], { cwd: wsdir });
     }
     catch (error) {
         console.error(`Error while committing changes`);

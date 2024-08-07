@@ -13,6 +13,9 @@ inputs:
   skip-push:
     description: "Skip commit push (for testing)"
     required: false
+  skip-ci:
+    description: "Remove adding [skip-ci] to the .bitmap file commit message"
+    required: false
 runs:
   using: 'node20'
   main: 'dist/index.js'

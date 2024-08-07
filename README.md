@@ -20,6 +20,10 @@ This task synchronize updates to a Bit lane with its respective Git Branch. As t
 
 **Optional** Skip push for testing purposes.
 
+### `skip-ci`
+
+**Optional** The Git commit message includes `[skip-ci]` to disable subsequent CI triggers as a result of the file modifications. Use `skip-ci: 'false'` to remove it.
+
 ## Example usage
 
 **Note:** Use `actions/checkout@v3` and `bit-task/init@v1` as prior steps in your pipeline before running `bit-tasks/lane-branch@v1`.

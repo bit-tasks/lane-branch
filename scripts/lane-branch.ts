@@ -2,6 +2,7 @@ import { exec } from "@actions/exec";
 
 const run = async (
   skipPush: boolean,
+  skipCI: boolean,
   laneName: string,
   gitUserName: string,
   gitUserEmail: string,
@@ -27,7 +28,7 @@ const run = async (
 
   try {
     await exec(
-      `git commit -m "Commiting the latest updates from lane:" ${laneName} to the Git branch`,
+      `git commit -m "Commiting the latest updates from lane:" ${laneName} to the Git branch (automated)${skipCI ? ` [skip-ci]`: ''}"`,
       [],
       { cwd: wsdir }
     );
