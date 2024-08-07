@@ -4013,7 +4013,12 @@ const run = (skipPush, skipCI, laneName, gitUserName, gitUserEmail, wsdir) => __
     const org = process.env.ORG;
     const scope = process.env.SCOPE;
     yield (0, exec_1.exec)("bit status --strict", [], { cwd: wsdir });
-    yield (0, exec_1.exec)(`bit lane import ${laneName}`, [], { cwd: wsdir });
+    if (laneName === "main") {
+        yield (0, exec_1.exec)("bit checkout head", [], { cwd: wsdir });
+    }
+    else {
+        yield (0, exec_1.exec)(`bit lane import ${laneName}`, [], { cwd: wsdir });
+    }
     // Remove snap hashes and lane details from .Bitmap
     yield (0, exec_1.exec)("bit init --reset-lane-new", [], { cwd: wsdir });
     // Git operations
@@ -4025,7 +4030,7 @@ const run = (skipPush, skipCI, laneName, gitUserName, gitUserEmail, wsdir) => __
     });
     yield (0, exec_1.exec)("git add .", [], { cwd: wsdir });
     try {
-        yield (0, exec_1.exec)(`git commit -m "Commiting the latest updates from lane:" ${laneName} to the Git branch (automated)${skipCI ? ` [skip-ci]` : ''}"`, [], { cwd: wsdir });
+        yield (0, exec_1.exec)(`git commit -m "Commiting the latest updates from lane:" ${laneName} to the Git branch (automated)${skipCI ? ` [skip-ci]` : ""}"`, [], { cwd: wsdir });
     }
     catch (error) {
         console.error(`Error while committing changes`);

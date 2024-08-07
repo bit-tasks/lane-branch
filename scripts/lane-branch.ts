@@ -12,7 +12,12 @@ const run = async (
   const scope = process.env.SCOPE;
 
   await exec("bit status --strict", [], { cwd: wsdir });
-  await exec(`bit lane import ${laneName}`, [], { cwd: wsdir });
+
+  if (laneName === "main") {
+    await exec("bit checkout head", [], { cwd: wsdir });
+  } else {
+    await exec(`bit lane import ${laneName}`, [], { cwd: wsdir });
+  }
 
   // Remove snap hashes and lane details from .Bitmap
   await exec("bit init --reset-lane-new", [], { cwd: wsdir });
@@ -28,7 +33,9 @@ const run = async (
 
   try {
     await exec(
-      `git commit -m "Commiting the latest updates from lane:" ${laneName} to the Git branch (automated)${skipCI ? ` [skip-ci]`: ''}"`,
+      `git commit -m "Commiting the latest updates from lane:" ${laneName} to the Git branch (automated)${
+        skipCI ? ` [skip-ci]` : ""
+      }"`,
       [],
       { cwd: wsdir }
     );
