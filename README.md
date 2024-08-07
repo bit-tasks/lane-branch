@@ -11,12 +11,20 @@ This task creates a Bit lane for each Git Branch. As the next step in your pipel
 
 **Optional** The workspace directory path from the root. Default `"Dir specified in Init Task or ./"`.
 
+### `lane`
+
+**Optional** The source Bit lane name where the updates are fetched from. Default `"main"` lane.
+
+### `skip-push`
+
+**Optional** Skip push for testing purposes.
+
 ## Example usage
 
-**Note:** Use `bit-task/init@v1` as a prior step in your pipeline before running `bit-tasks/branch-lane@v1`. As the next step, use the `bit-tasks/commit-bitmap@v1` to update the `.Bitmap` file.
+**Note:** Use `actions/checkout@v3` and `bit-task/init@v1` as prior steps in your pipeline before running `bit-tasks/lane-branch@v1`.
 
 ```yaml
-name: Test Bit Branch Lane
+name: Test Bit Lane Branch
 on:
   push:
     branches-ignore:
@@ -38,10 +46,8 @@ jobs:
         uses: bit-tasks/init@v1
         with:
           ws-dir: '<WORKSPACE_DIR_PATH>'
-      - name: Bit Branch Lane
-        uses: bit-tasks/branch-lane@v1
-      - name: Bit Commit Bitmap
-        uses: bit-tasks/commit-bitmap@v1
+      - name: Bit Lane Branch
+        uses: bit-tasks/lane-branch@v1
 ```
 
 # Contributor Guide
