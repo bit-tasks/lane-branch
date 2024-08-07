@@ -1,7 +1,7 @@
-name: 'Bit Branch Lane'
+name: 'Bit Lane Branch'
 description: 'Create a new Bit lane for each new Git branch'
 branding: 
-  icon: 'git-branch'
+  icon: 'git-merge'
   color: 'purple'
 inputs:
   ws-dir:
