@@ -1,6 +1,11 @@
 name: Test Bit Lane Branch
 on:
   workflow_dispatch:
+    inputs:
+      lane_name:
+        description: 'The name of the lane to sync from'
+        required: true
+        default: 'main'
 permissions:
   contents: write
 jobs:
@@ -15,8 +20,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+            ref: ${{ github.event.inputs.lane_name }}
       - name: Initialize Bit
-        uses: bit-tasks/init@v1
+        uses: bit-tasks/init@v2
         with:
             ws-dir: 'test-data'
       - name: Creating a bare scope
@@ -26,13 +33,13 @@ jobs:
       - name: Add remote scope
         run: cd test-data && bit remote add http://localhost:4000
       - name: Create lane to test
-        run: cd test-data && bit lane create "test-lane"
+        run: cd test-data && bit lane create ${{ github.event.inputs.lane_name }}
       - name: Snap and export
         run: cd test-data && bit snap -m "Snapping the changes" && bit export -m "Exporting the changes"
       - name: Bit Lane Branch
         uses: bit-tasks/lane-branch@main
         with:
-            lane: 'test-lane'
+            lane: ${{ github.event.inputs.lane_name }}
             skip-push: 'true'
       - name: Bit Lanes
         run: cd test-data && bit lane list --details

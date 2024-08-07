@@ -7,7 +7,7 @@ inputs:
   ws-dir:
     description: "Workspace json file directory path"
     required: false
-  lane:
+  lane-name:
     description: "The source Bit lane name where the updates are fetched from"
     required: false
   skip-push:

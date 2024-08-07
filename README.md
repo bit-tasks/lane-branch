@@ -12,7 +12,7 @@ This task synchronize updates to a Bit lane with its respective Git Branch. As t
 
 **Optional** The workspace directory path from the root. Default `"Dir specified in Init Task or ./"`.
 
-### `lane`
+### `lane-name`
 
 **Optional** The source Bit lane name where the updates are fetched from. Default `"main"` lane.
 
@@ -27,9 +27,12 @@ This task synchronize updates to a Bit lane with its respective Git Branch. As t
 ```yaml
 name: Test Bit Lane Branch
 on:
-  push:
-    branches-ignore:
-      - main # or your default branch
+  workflow_dispatch:
+    inputs:
+      lane_name:
+        description: 'The name of the lane to sync from'
+        required: true
+        default: 'main'
 permissions:
   contents: write
 jobs:
@@ -43,12 +46,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.lane_name }}
       - name: Initialize Bit
-        uses: bit-tasks/init@v1
+        uses: bit-tasks/init@v2
         with:
           ws-dir: '<WORKSPACE_DIR_PATH>'
       - name: Bit Lane Branch
         uses: bit-tasks/lane-branch@v1
+        with:
+          lane-name: ${{ github.event.inputs.lane_name }}
 ```
 
 # Contributor Guide
