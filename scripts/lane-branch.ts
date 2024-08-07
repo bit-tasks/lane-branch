@@ -33,9 +33,7 @@ const run = async (
 
   try {
     await exec(
-      `git commit -m "Commiting the latest updates from lane:" ${laneName} to the Git branch (automated)${
-        skipCI ? ` [skip-ci]` : ""
-      }"`,
+      `git commit -m "Commiting the latest updates from lane: ${laneName} to the Git branch (automated)${ skipCI ? ` [skip-ci]` : ''}"`,
       [],
       { cwd: wsdir }
     );

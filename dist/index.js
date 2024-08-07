@@ -4030,7 +4030,7 @@ const run = (skipPush, skipCI, laneName, gitUserName, gitUserEmail, wsdir) => __
     });
     yield (0, exec_1.exec)("git add .", [], { cwd: wsdir });
     try {
-        yield (0, exec_1.exec)(`git commit -m "Commiting the latest updates from lane:" ${laneName} to the Git branch (automated)${skipCI ? ` [skip-ci]` : ""}"`, [], { cwd: wsdir });
+        yield (0, exec_1.exec)(`git commit -m "Commiting the latest updates from lane: ${laneName} to the Git branch (automated)${skipCI ? ` [skip-ci]` : ''}"`, [], { cwd: wsdir });
     }
     catch (error) {
         console.error(`Error while committing changes`);
