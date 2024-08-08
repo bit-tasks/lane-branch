@@ -1,5 +1,5 @@
-
 # Sync Bit lane with Git branch
+
 When a lane is created or modified in **bit.cloud** sync the changes with the respective Git branch.
 
 # GitHub Actions
@@ -26,17 +26,17 @@ This task synchronize updates to a Bit lane with its respective Git Branch. As t
 
 ## Example usage
 
-**Note:** Use `actions/checkout@v4` and `bit-task/init@v2` as prior steps in your pipeline before running `bit-tasks/lane-branch@v1`. Define an input parameter for GitAction for `lane` and initialize it in `bit-task/init@v2` task.
+**Note:** Use `actions/checkout@v4` and `bit-task/init@v2` with `skip-install: "true"` input parameter, as the prior steps in your pipeline. Define the input parameter `lane-name` in your workflow yml and set its value to `bit-task/lane-branch@v1`task.
 
 ```yaml
 name: Test Bit Lane Branch
 on:
   workflow_dispatch:
     inputs:
-      lane:
-        description: 'The name of the lane to sync from'
+      lane_name:
+        description: "The name of the lane to sync from"
         required: true
-        default: 'main'
+        default: "main"
 permissions:
   contents: write
 jobs:
@@ -53,10 +53,12 @@ jobs:
       - name: Initialize Bit
         uses: bit-tasks/init@v2
         with:
-          ws-dir: '<WORKSPACE_DIR_PATH>'
-          lane: ${{ github.event.inputs.lane }}
+          ws-dir: "<WORKSPACE_DIR_PATH>"
+          skip-install: "true"
       - name: Bit Lane Branch
         uses: bit-tasks/lane-branch@v1
+        with:
+          lane-name: ${{ github.event.inputs.lane_name }}
 ```
 
 # Contributor Guide

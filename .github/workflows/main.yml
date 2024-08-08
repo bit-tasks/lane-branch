@@ -3,9 +3,9 @@ on:
   workflow_dispatch:
     inputs:
       lane:
-        description: 'The name of the lane to sync from'
+        description: "The name of the lane to sync from"
         required: true
-        default: 'main'
+        default: "main"
 permissions:
   contents: write
 jobs:
@@ -22,25 +22,20 @@ jobs:
       - name: Initialize Bit
         uses: bit-tasks/init@v2
         with:
-          ws-dir: 'test-data'
+          ws-dir: "test-data"
+          skip-install: "true"
       - name: Creating a bare scope
         run: mkdir org.scope-name && cd org.scope-name && bit init --bare
       - name: Start the server and test
-        run: cd org.scope-name && bit start --port 4000 --no-browser & sleep 200 && curl http://localhost:4000 
+        run: cd org.scope-name && bit start --port 4000 --no-browser & sleep 200 && curl http://localhost:4000
       - name: Add remote scope
         run: cd test-data && bit remote add http://localhost:4000
       - name: Snap and export
         run: cd test-data && bit lane create "${{ github.event.inputs.lane }}" && bit snap -m "Snapping the changes" && bit export
-      - name: Import the lane
-        uses: bit-tasks/init@v2
-        with:
-          ws-dir: 'test-data'
-          lane: ${{ github.event.inputs.lane }}
       - name: Bit Lane Branch
         uses: bit-tasks/lane-branch@main
         with:
-            branch-name: 'main'
-            skip-push: 'true'
+          lane-name: ${{ github.event.inputs.lane }}
+          skip-push: "true"
       - name: Bit Lanes
         run: cd test-data && bit lane list --details
-          
