@@ -3965,19 +3965,20 @@ var __importStar = (this && this.__importStar) || function (mod) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(186));
 const lane_branch_1 = __importDefault(__nccwpck_require__(616));
 try {
     const wsDir = core.getInput("ws-dir") || process.env.WSDIR || "./";
-    const laneName = core.getInput("lane-name");
-    const branchName = core.getInput("branch-name") || laneName;
+    const lane = process.env.LANE || "";
+    const branch = core.getInput("branch-name") || lane || ((_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.split("/").slice(-1)[0]) || 'main';
     const skipPush = core.getInput("skip-push") === "true" ? true : false;
     const skipCI = core.getInput("skip-ci") === "false" ? false : true;
-    if (!laneName) {
-        throw new Error("Lane name is not found");
+    if (!lane) {
+        throw new Error('"lane" parameter is not defined in "bit-tasks/init@v2" task');
     }
-    if (laneName === "main") {
+    if (lane === "main") {
         throw new Error('Specify a lane other than "main"!');
     }
     const gitUserName = process.env.GIT_USER_NAME;
@@ -3988,7 +3989,7 @@ try {
     if (!gitUserEmail) {
         throw new Error("Git user email token not found");
     }
-    (0, lane_branch_1.default)(skipPush, skipCI, laneName, branchName, gitUserName, gitUserEmail, wsDir);
+    (0, lane_branch_1.default)(skipPush, skipCI, lane, branch, gitUserName, gitUserEmail, wsDir);
 }
 catch (error) {
     core.setFailed(error.message);
@@ -4013,10 +4014,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const exec_1 = __nccwpck_require__(514);
-const run = (skipPush, skipCI, laneName, branchName, gitUserName, gitUserEmail, wsdir) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, exec_1.exec)(`bit lane import ${laneName}`, [], { cwd: wsdir });
-    // Remove snap hashes and lane details from .Bitmap
-    yield (0, exec_1.exec)("bit init --reset-lane-new", [], { cwd: wsdir });
+const run = (skipPush, skipCI, laneName, branch, gitUserName, gitUserEmail, wsdir) => __awaiter(void 0, void 0, void 0, function* () {
+    yield (0, exec_1.exec)("bit status --strict", [], { cwd: wsdir });
     // Git operations
     yield (0, exec_1.exec)(`git config --global user.name "${gitUserName}"`, [], {
         cwd: wsdir,
@@ -4024,7 +4023,7 @@ const run = (skipPush, skipCI, laneName, branchName, gitUserName, gitUserEmail, 
     yield (0, exec_1.exec)(`git config --global user.email "${gitUserEmail}"`, [], {
         cwd: wsdir,
     });
-    yield (0, exec_1.exec)(`git checkout -b ${branchName}`, [], {
+    yield (0, exec_1.exec)(`git checkout -b ${branch}`, [], {
         cwd: wsdir,
     });
     yield (0, exec_1.exec)("git add .", [], { cwd: wsdir });
@@ -4035,7 +4034,7 @@ const run = (skipPush, skipCI, laneName, branchName, gitUserName, gitUserEmail, 
         console.error(`Error while committing changes`);
     }
     if (!skipPush) {
-        yield (0, exec_1.exec)(`git push origin "${branchName}"`, [], { cwd: wsdir });
+        yield (0, exec_1.exec)(`git push origin "${branch}"`, [], { cwd: wsdir });
     }
 });
 exports["default"] = run;

@@ -23,7 +23,7 @@ jobs:
         uses: bit-tasks/init@v2
         with:
           ws-dir: 'test-data'
-          lane-name: ${{ github.event.inputs.lane_name }}
+          lane: ${{ github.event.inputs.lane_name }}
       - name: Creating a bare scope
         run: mkdir org.scope-name && cd org.scope-name && bit init --bare
       - name: Start the server and test

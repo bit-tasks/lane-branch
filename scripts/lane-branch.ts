@@ -4,7 +4,7 @@ const run = async (
   skipPush: boolean,
   skipCI: boolean,
   laneName: string,
-  branchName: string,
+  branch: string,
   gitUserName: string,
   gitUserEmail: string,
   wsdir: string
@@ -19,7 +19,7 @@ const run = async (
   await exec(`git config --global user.email "${gitUserEmail}"`, [], {
     cwd: wsdir,
   });
-  await exec(`git checkout -b ${branchName}`, [], {
+  await exec(`git checkout -b ${branch}`, [], {
     cwd: wsdir,
   });
   await exec("git add .", [], { cwd: wsdir });
@@ -35,7 +35,7 @@ const run = async (
   }
 
   if (!skipPush) {
-    await exec(`git push origin "${branchName}"`, [], { cwd: wsdir });
+    await exec(`git push origin "${branch}"`, [], { cwd: wsdir });
   }
 };
 
