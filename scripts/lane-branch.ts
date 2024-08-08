@@ -12,7 +12,7 @@ const run = async (
   args: string[]
 ) => {
 
-  await exec("bit", ["import", ...args], {
+  await exec("bit", ["import", "-x", ...args], {
     cwd: wsdir,
   });
 
