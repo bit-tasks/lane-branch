@@ -3,17 +3,17 @@ import run from "./scripts/lane-branch";
 
 try {
   const wsDir: string = core.getInput("ws-dir") || process.env.WSDIR || "./";
-  const lane = process.env.LANE || "";
-  const branch: string = core.getInput("branch-name") || lane || process.env.GITHUB_REF?.split("/").slice(-1)[0] || 'main';
-  const skipPush: boolean =
-    core.getInput("skip-push") === "true" ? true : false;
+  const args = process.env.LOG? [`--log=${process.env.LOG}`]: [];
+  const laneName: string = core.getInput("lane-name");
+  const branchName: string = core.getInput("branch-name") || laneName;
+  const skipPush: boolean = core.getInput("skip-push") === "true" ? true : false;
   const skipCI: boolean = core.getInput("skip-ci") === "false" ? false : true;
 
-  if (!lane) {
-    throw new Error('"lane" parameter is not defined in "bit-tasks/init@v2" task');
+  if (!laneName) {
+    throw new Error("Lane name is not found");
   }
 
-  if (lane === "main") {
+  if (laneName === "main") {
     throw new Error('Specify a lane other than "main"!');
   }
 
@@ -27,7 +27,7 @@ try {
     throw new Error("Git user email token not found");
   }
 
-  run(skipPush, skipCI, lane, branch, gitUserName, gitUserEmail, wsDir);
+  run(skipPush, skipCI, laneName, branchName, gitUserName, gitUserEmail, wsDir, args);
 } catch (error) {
   core.setFailed((error as Error).message);
 }
