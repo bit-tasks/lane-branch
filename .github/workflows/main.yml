@@ -30,8 +30,8 @@ jobs:
         run: cd org.scope-name && bit start --port 4000 --no-browser & sleep 200 && curl http://localhost:4000
       - name: Add remote scope
         run: cd test-data && bit remote add http://localhost:4000
-      - name: Snap and export
-        run: cd test-data && bit lane create "${{ github.event.inputs.lane }}" && bit snap -m "Snapping the changes" && bit export
+      # - name: Snap and export
+      #   run: cd test-data && bit lane create "${{ github.event.inputs.lane }}" && bit snap -m "Snapping the changes" && bit export
       - name: Bit Lane Branch
         uses: bit-tasks/lane-branch@main
         with:
