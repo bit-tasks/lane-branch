@@ -12,9 +12,13 @@ This task synchronize updates to a Bit lane with its respective Git Branch. As t
 
 **Optional** The workspace directory path from the root. Default `"Dir specified in Init Task or ./"`.
 
+### `lane-name`
+
+**Required** The source Bit lane name where the component updates are sync from. The lane name should follow the format `org.scope/lane-name`.
+
 ### `branch-name`
 
-**Optional** The destination Bit branch name where the component updates are sync to. Default `lane-name`.
+**Optional** The destination Git branch name where the component updates are sync to. Default `lane-name`.
 
 ### `skip-push`
 
