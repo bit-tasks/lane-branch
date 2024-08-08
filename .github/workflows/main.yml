@@ -17,17 +17,10 @@ jobs:
       GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
       BIT_CONFIG_ACCESS_TOKEN: ${{ secrets.BIT_CONFIG_ACCESS_TOKEN }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
       - name: Initialize Bit
         uses: bit-tasks/init@v2
         with:
             ws-dir: 'test-data'
-      - name: Resolve component packages from bit.cloud registry (Mandatory for component installation using package managers other than Bit)
-        run: |
-            npm config set '@bit:registry' https://node-registry.bit.cloud
-            npm config set '@teambit:registry' https://node-registry.bit.cloud
-            npm config set //node-registry.bit.cloud/:_authToken ${{ env.BIT_CONFIG_ACCESS_TOKEN }}
       - name: Creating a bare scope
         run: mkdir org.scope-name && cd org.scope-name && bit init --bare
       - name: Start the server and test
@@ -35,11 +28,12 @@ jobs:
       - name: Add remote scope
         run: cd test-data && bit remote add http://localhost:4000
       - name: Snap and export
-        run: cd test-data && bit snap -m "Snapping the changes" && bit export
+        run: cd test-data && bit lane create "${{ github.event.inputs.lane_name }}" && bit snap -m "Snapping the changes" && bit export
       - name: Bit Lane Branch
         uses: bit-tasks/lane-branch@main
         with:
             lane-name: ${{ github.event.inputs.lane_name }}
+            branch-name: 'main'
             skip-push: 'true'
       - name: Bit Lanes
         run: cd test-data && bit lane list --details

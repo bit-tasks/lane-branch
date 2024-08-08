@@ -4,20 +4,15 @@ const run = async (
   skipPush: boolean,
   skipCI: boolean,
   laneName: string,
+  branchName: string,
   gitUserName: string,
   gitUserEmail: string,
   wsdir: string
 ) => {
-  const org = process.env.ORG;
-  const scope = process.env.SCOPE;
 
   await exec("bit status --strict", [], { cwd: wsdir });
 
-  if (laneName === "main") {
-    await exec("bit checkout head", [], { cwd: wsdir });
-  } else {
-    await exec(`bit lane import ${laneName}`, [], { cwd: wsdir });
-  }
+  await exec(`bit lane import ${laneName}`, [], { cwd: wsdir });
 
   // Remove snap hashes and lane details from .Bitmap
   await exec("bit init --reset-lane-new", [], { cwd: wsdir });
@@ -26,9 +21,15 @@ const run = async (
   await exec(`git config --global user.name "${gitUserName}"`, [], {
     cwd: wsdir,
   });
+  
   await exec(`git config --global user.email "${gitUserEmail}"`, [], {
     cwd: wsdir,
   });
+
+  await exec(`git checkout -b ${branchName}`, [], {
+    cwd: wsdir,
+  });
+
   await exec("git add .", [], { cwd: wsdir });
 
   try {
@@ -42,7 +43,7 @@ const run = async (
   }
 
   if (!skipPush) {
-    await exec("git push", [], { cwd: wsdir });
+    await exec(`git push origin "${branchName}"`, [], { cwd: wsdir });
   }
 };
 
