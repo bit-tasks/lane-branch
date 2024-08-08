@@ -26,9 +26,11 @@ const run = async (
     cwd: wsdir,
   });
 
-  await exec(`git checkout -b ${branchName}`, [], {
-    cwd: wsdir,
-  });
+  if(branchName){
+    await exec(`git checkout -b ${branchName}`, [], {
+      cwd: wsdir,
+    });
+  }
 
   await exec("git add .", [], { cwd: wsdir });
 
@@ -43,7 +45,7 @@ const run = async (
   }
 
   if (!skipPush) {
-    await exec(`git push origin "${branchName}"`, [], { cwd: wsdir });
+    await exec(`git push origin "${branchName? branchName : laneName}"`, [], { cwd: wsdir });
   }
 };
 

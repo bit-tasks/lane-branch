@@ -4,7 +4,7 @@ import run from "./scripts/lane-branch";
 try {
   const wsDir: string = core.getInput("ws-dir") || process.env.WSDIR || "./";
   const laneName: string = core.getInput("lane-name");
-  const branchName: string = core.getInput("branch-name") || laneName;
+  const branchName: string = core.getInput("branch-name");
   const skipPush: boolean =
     core.getInput("skip-push") === "true" ? true : false;
   const skipCI: boolean = core.getInput("skip-ci") === "false" ? false : true;

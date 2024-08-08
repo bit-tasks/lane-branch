@@ -30,7 +30,7 @@ This task synchronize updates to a Bit lane with its respective Git Branch. As t
 
 ## Example usage
 
-**Note:** Use `bit-task/init@v2` a a prior step in your pipeline before running `bit-tasks/lane-branch@v1`. You can also receive the `lane-name` as an input parameter from GitHub Actions as shown below.
+**Note:** Use `actions/checkout@v4` and `bit-task/init@v2` as prior steps in your pipeline before running `bit-tasks/lane-branch@v1`. You can also receive the `lane-name` when executing GitHub Actions as an input parameter as shown below.
 
 ```yaml
 name: Test Bit Lane Branch
@@ -52,6 +52,10 @@ jobs:
       GIT_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
       BIT_CONFIG_ACCESS_TOKEN: ${{ secrets.BIT_CONFIG_ACCESS_TOKEN }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.lane_name }}
       - name: Initialize Bit
         uses: bit-tasks/init@v2
         with:

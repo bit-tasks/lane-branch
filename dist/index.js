@@ -3971,7 +3971,7 @@ const lane_branch_1 = __importDefault(__nccwpck_require__(616));
 try {
     const wsDir = core.getInput("ws-dir") || process.env.WSDIR || "./";
     const laneName = core.getInput("lane-name");
-    const branchName = core.getInput("branch-name") || laneName;
+    const branchName = core.getInput("branch-name");
     const skipPush = core.getInput("skip-push") === "true" ? true : false;
     const skipCI = core.getInput("skip-ci") === "false" ? false : true;
     if (!laneName) {
@@ -4025,9 +4025,11 @@ const run = (skipPush, skipCI, laneName, branchName, gitUserName, gitUserEmail, 
     yield (0, exec_1.exec)(`git config --global user.email "${gitUserEmail}"`, [], {
         cwd: wsdir,
     });
-    yield (0, exec_1.exec)(`git checkout -b ${branchName}`, [], {
-        cwd: wsdir,
-    });
+    if (branchName) {
+        yield (0, exec_1.exec)(`git checkout -b ${branchName}`, [], {
+            cwd: wsdir,
+        });
+    }
     yield (0, exec_1.exec)("git add .", [], { cwd: wsdir });
     try {
         yield (0, exec_1.exec)(`git commit -m "Commiting the latest updates from lane: ${laneName} to the Git branch (automated)${skipCI ? ` [skip-ci]` : ''}"`, [], { cwd: wsdir });
@@ -4036,7 +4038,7 @@ const run = (skipPush, skipCI, laneName, branchName, gitUserName, gitUserEmail, 
         console.error(`Error while committing changes`);
     }
     if (!skipPush) {
-        yield (0, exec_1.exec)(`git push origin "${branchName}"`, [], { cwd: wsdir });
+        yield (0, exec_1.exec)(`git push origin "${branchName ? branchName : laneName}"`, [], { cwd: wsdir });
     }
 });
 exports["default"] = run;
