@@ -46,7 +46,7 @@ const run = async (
   }
 
   if (!skipPush) {
-    await exec(`git push origin "${branchName}"`, [], { cwd: wsdir });
+    await exec(`git push origin "${branchName}" -f`, [], { cwd: wsdir });
   } else {
     core.warning("WARNING - Skipped pushing to GitHub");
   }

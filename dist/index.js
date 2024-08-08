@@ -4062,7 +4062,7 @@ const run = (skipPush, skipCI, laneName, branchName, gitUserName, gitUserEmail, 
         core.error(`Error while committing changes!`);
     }
     if (!skipPush) {
-        yield (0, exec_1.exec)(`git push origin "${branchName}"`, [], { cwd: wsdir });
+        yield (0, exec_1.exec)(`git push origin "${branchName}" -f`, [], { cwd: wsdir });
     }
     else {
         core.warning("WARNING - Skipped pushing to GitHub");
