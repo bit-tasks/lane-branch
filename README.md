@@ -26,7 +26,7 @@ This task synchronize updates to a Bit lane with its respective Git Branch. As t
 
 ## Example usage
 
-**Note:** Use `actions/checkout@v4` and `bit-task/init@v2` as prior steps in your pipeline before running `bit-tasks/lane-branch@v1`. You can also receive the `lane-name` when executing GitHub Actions as an input parameter as shown below.
+**Note:** Use `actions/checkout@v4` and `bit-task/init@v2` as prior steps in your pipeline before running `bit-tasks/lane-branch@v1`. Define an input parameter for GitAction for `lane-name` and initialize it in `bit-task/init@v2` task.
 
 ```yaml
 name: Test Bit Lane Branch
