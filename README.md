@@ -26,14 +26,14 @@ This task synchronize updates to a Bit lane with its respective Git Branch. As t
 
 ## Example usage
 
-**Note:** Use `actions/checkout@v4` and `bit-task/init@v2` as prior steps in your pipeline before running `bit-tasks/lane-branch@v1`. Define an input parameter for GitAction for `lane-name` and initialize it in `bit-task/init@v2` task.
+**Note:** Use `actions/checkout@v4` and `bit-task/init@v2` as prior steps in your pipeline before running `bit-tasks/lane-branch@v1`. Define an input parameter for GitAction for `lane` and initialize it in `bit-task/init@v2` task.
 
 ```yaml
 name: Test Bit Lane Branch
 on:
   workflow_dispatch:
     inputs:
-      lane_name:
+      lane:
         description: 'The name of the lane to sync from'
         required: true
         default: 'main'
@@ -54,7 +54,7 @@ jobs:
         uses: bit-tasks/init@v2
         with:
           ws-dir: '<WORKSPACE_DIR_PATH>'
-          lane-name: ${{ github.event.inputs.lane_name }}
+          lane: ${{ github.event.inputs.lane }}
       - name: Bit Lane Branch
         uses: bit-tasks/lane-branch@v1
 ```

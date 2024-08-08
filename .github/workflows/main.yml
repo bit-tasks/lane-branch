@@ -2,7 +2,7 @@ name: Test Bit Lane Branch
 on:
   workflow_dispatch:
     inputs:
-      lane_name:
+      lane:
         description: 'The name of the lane to sync from'
         required: true
         default: 'main'
@@ -23,7 +23,7 @@ jobs:
         uses: bit-tasks/init@v2
         with:
           ws-dir: 'test-data'
-          lane: ${{ github.event.inputs.lane_name }}
+          lane: ${{ github.event.inputs.lane }}
       - name: Creating a bare scope
         run: mkdir org.scope-name && cd org.scope-name && bit init --bare
       - name: Start the server and test
@@ -31,7 +31,7 @@ jobs:
       - name: Add remote scope
         run: cd test-data && bit remote add http://localhost:4000
       - name: Snap and export
-        run: cd test-data && bit lane create "${{ github.event.inputs.lane_name }}" && bit snap -m "Snapping the changes" && bit export
+        run: cd test-data && bit lane create "${{ github.event.inputs.lane }}" && bit snap -m "Snapping the changes" && bit export
       - name: Bit Lane Branch
         uses: bit-tasks/lane-branch@main
         with:
