@@ -54,8 +54,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.lane_name }}
       - name: Initialize Bit
         uses: bit-tasks/init@v2
         with:

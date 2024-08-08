@@ -10,8 +10,6 @@ const run = async (
   wsdir: string
 ) => {
 
-  await exec("bit status --strict", [], { cwd: wsdir });
-
   await exec(`bit lane import ${laneName}`, [], { cwd: wsdir });
 
   // Remove snap hashes and lane details from .Bitmap
@@ -26,11 +24,9 @@ const run = async (
     cwd: wsdir,
   });
 
-  if(branchName){
-    await exec(`git checkout -b ${branchName}`, [], {
-      cwd: wsdir,
-    });
-  }
+  await exec(`git checkout -b ${branchName}`, [], {
+    cwd: wsdir,
+  });
 
   await exec("git add .", [], { cwd: wsdir });
 
@@ -45,7 +41,7 @@ const run = async (
   }
 
   if (!skipPush) {
-    await exec(`git push origin "${branchName? branchName : laneName}"`, [], { cwd: wsdir });
+    await exec(`git push origin "${branchName}"`, [], { cwd: wsdir });
   }
 };
 

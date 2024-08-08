@@ -3971,7 +3971,7 @@ const lane_branch_1 = __importDefault(__nccwpck_require__(616));
 try {
     const wsDir = core.getInput("ws-dir") || process.env.WSDIR || "./";
     const laneName = core.getInput("lane-name");
-    const branchName = core.getInput("branch-name");
+    const branchName = core.getInput("branch-name") || laneName;
     const skipPush = core.getInput("skip-push") === "true" ? true : false;
     const skipCI = core.getInput("skip-ci") === "false" ? false : true;
     if (!laneName) {
@@ -4014,7 +4014,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const exec_1 = __nccwpck_require__(514);
 const run = (skipPush, skipCI, laneName, branchName, gitUserName, gitUserEmail, wsdir) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, exec_1.exec)("bit status --strict", [], { cwd: wsdir });
     yield (0, exec_1.exec)(`bit lane import ${laneName}`, [], { cwd: wsdir });
     // Remove snap hashes and lane details from .Bitmap
     yield (0, exec_1.exec)("bit init --reset-lane-new", [], { cwd: wsdir });
@@ -4025,11 +4024,9 @@ const run = (skipPush, skipCI, laneName, branchName, gitUserName, gitUserEmail, 
     yield (0, exec_1.exec)(`git config --global user.email "${gitUserEmail}"`, [], {
         cwd: wsdir,
     });
-    if (branchName) {
-        yield (0, exec_1.exec)(`git checkout -b ${branchName}`, [], {
-            cwd: wsdir,
-        });
-    }
+    yield (0, exec_1.exec)(`git checkout -b ${branchName}`, [], {
+        cwd: wsdir,
+    });
     yield (0, exec_1.exec)("git add .", [], { cwd: wsdir });
     try {
         yield (0, exec_1.exec)(`git commit -m "Commiting the latest updates from lane: ${laneName} to the Git branch (automated)${skipCI ? ` [skip-ci]` : ''}"`, [], { cwd: wsdir });
@@ -4038,7 +4035,7 @@ const run = (skipPush, skipCI, laneName, branchName, gitUserName, gitUserEmail, 
         console.error(`Error while committing changes`);
     }
     if (!skipPush) {
-        yield (0, exec_1.exec)(`git push origin "${branchName ? branchName : laneName}"`, [], { cwd: wsdir });
+        yield (0, exec_1.exec)(`git push origin "${branchName}"`, [], { cwd: wsdir });
     }
 });
 exports["default"] = run;
