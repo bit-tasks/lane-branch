@@ -4039,6 +4039,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const exec_1 = __nccwpck_require__(514);
 const core = __importStar(__nccwpck_require__(186));
 const run = (skipPush, skipCI, laneName, branchName, gitUserName, gitUserEmail, wsdir, args) => __awaiter(void 0, void 0, void 0, function* () {
+    yield (0, exec_1.exec)("bit", ["import", ...args], {
+        cwd: wsdir,
+    });
     yield (0, exec_1.exec)("bit", ["lane", "import", `"${laneName}"`, "-x", ...args], {
         cwd: wsdir,
     });
