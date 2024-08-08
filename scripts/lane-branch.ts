@@ -10,24 +10,18 @@ const run = async (
   wsdir: string
 ) => {
 
-  await exec(`bit lane import ${laneName}`, [], { cwd: wsdir });
-
-  // Remove snap hashes and lane details from .Bitmap
-  await exec("bit init --reset-lane-new", [], { cwd: wsdir });
+  await exec("bit status --strict", [], { cwd: wsdir });
 
   // Git operations
   await exec(`git config --global user.name "${gitUserName}"`, [], {
     cwd: wsdir,
   });
-  
   await exec(`git config --global user.email "${gitUserEmail}"`, [], {
     cwd: wsdir,
   });
-
   await exec(`git checkout -b ${branchName}`, [], {
     cwd: wsdir,
   });
-
   await exec("git add .", [], { cwd: wsdir });
 
   try {

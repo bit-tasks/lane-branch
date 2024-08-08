@@ -22,7 +22,8 @@ jobs:
       - name: Initialize Bit
         uses: bit-tasks/init@v2
         with:
-            ws-dir: 'test-data'
+          ws-dir: '<WORKSPACE_DIR_PATH>'
+          lane-name: ${{ github.event.inputs.lane_name }}
       - name: Creating a bare scope
         run: mkdir org.scope-name && cd org.scope-name && bit init --bare
       - name: Start the server and test
@@ -34,7 +35,6 @@ jobs:
       - name: Bit Lane Branch
         uses: bit-tasks/lane-branch@main
         with:
-            lane-name: ${{ github.event.inputs.lane_name }}
             branch-name: 'main'
             skip-push: 'true'
       - name: Bit Lanes

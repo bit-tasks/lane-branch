@@ -3,14 +3,14 @@ import run from "./scripts/lane-branch";
 
 try {
   const wsDir: string = core.getInput("ws-dir") || process.env.WSDIR || "./";
-  const laneName: string = core.getInput("lane-name");
-  const branchName: string = core.getInput("branch-name") || laneName;
+  const laneName = process.env.LANE_NAME;
+  const branchName: string = core.getInput("branch-name") || laneName || process.env.GITHUB_REF?.split("/").slice(-1)[0] || 'main';
   const skipPush: boolean =
     core.getInput("skip-push") === "true" ? true : false;
   const skipCI: boolean = core.getInput("skip-ci") === "false" ? false : true;
 
-  if (!laneName) {
-    throw new Error("Lane name is not found");
+  if (!process.env.LANE_NAME) {
+    throw new Error("Lane is not found");
   }
 
   if (laneName === "main") {

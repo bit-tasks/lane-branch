@@ -7,9 +7,6 @@ inputs:
   ws-dir:
     description: "Workspace json file directory path"
     required: false
-  lane-name:
-    description: "The source Bit lane name where the updates are fetched from"
-    required: true
   branch-name:
     description: "The destination Git branch name where the updates are sync to"
     required: false

@@ -12,10 +12,6 @@ This task synchronize updates to a Bit lane with its respective Git Branch. As t
 
 **Optional** The workspace directory path from the root. Default `"Dir specified in Init Task or ./"`.
 
-### `lane-name`
-
-**Required** The source Bit lane name where the updates are fetched from.
-
 ### `branch-name`
 
 **Optional** The destination Bit branch name where the component updates are sync to. Default `lane-name`.
@@ -58,10 +54,9 @@ jobs:
         uses: bit-tasks/init@v2
         with:
           ws-dir: '<WORKSPACE_DIR_PATH>'
+          lane-name: ${{ github.event.inputs.lane_name }}
       - name: Bit Lane Branch
         uses: bit-tasks/lane-branch@v1
-        with:
-          lane-name: ${{ github.event.inputs.lane_name }}
 ```
 
 # Contributor Guide
