@@ -30,7 +30,7 @@ This task synchronize updates to a Bit lane with its respective Git Branch. As t
 
 ## Example usage
 
-**Note:** Use `actions/checkout@v4` and `bit-task/init@v2` with `skip-install: "true"` input parameter, as the prior steps in your pipeline. Define the input parameter `org.scope/lane-name` in your workflow yml and set its value to `bit-task/lane-branch@v1`task.
+**Note:** Use `actions/checkout@v4` and `bit-task/init@v2` with `skip-install: "true"` input parameter, as the prior steps in your pipeline. Define the input parameter following the format `org.scope/lane` in your workflow yml and set its value to `bit-task/lane-branch@v1`task.
 
 ```yaml
 name: Test Bit Lane Branch
@@ -38,7 +38,7 @@ on:
   workflow_dispatch:
     inputs:
       lane_name:
-        description: "The name of the lane to sync from"
+        description: "The name of the lane to sync from in the format: org.scope/lane"
         required: true
         default: ""
 permissions:
